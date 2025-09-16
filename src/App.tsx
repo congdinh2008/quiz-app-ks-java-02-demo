@@ -1,16 +1,31 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
-import { faGlobe } from '@fortawesome/free-solid-svg-icons'
+import Home from './pages/customer/Home'
+import About from './pages/customer/About'
+import Contact from './pages/customer/Contact'
+import Login from './pages/auth/Login'
+import Register from './pages/auth/Register'
+import CustomerLayout from './components/layouts/CustomerLayout'
+import AuthLayout from './components/layouts/AuthLayout'
+import Dashboard from './pages/admin/Dashboard'
+import AdminLayout from './components/layouts/AdminLayout'
 
 function App() {
 
   return (
-    <>
-      <h1 className="text-2xl font-bold underline">
-        Hello world! 
-        <FontAwesomeIcon icon={faGlobe} className="text-blue-500 ml-2"/>
-      </h1>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<CustomerLayout><Home/></CustomerLayout>} />
+        <Route path="/about" element={<CustomerLayout><About /></CustomerLayout>} />
+        <Route path="/contact" element={<CustomerLayout><Contact /></CustomerLayout>} />
+        <Route path="/login" element={<AuthLayout><Login /></AuthLayout>} />
+        <Route path="/register" element={<AuthLayout><Register /></AuthLayout>} />
+
+         {/* Admin Routing */}
+        <Route path="/admin" element={<AdminLayout><Dashboard /></AdminLayout>} />
+      </Routes>
+
+    </BrowserRouter>
   )
 }
 
