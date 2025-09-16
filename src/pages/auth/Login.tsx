@@ -1,21 +1,40 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import type { LoginRequestModel } from "../../models/login-request.model";
+import { authService } from "../../services/auth.service";
+import type { LoginResponseModel } from "../../models/login-response.model";
+import type { UserInformationViewModel } from "../../view-models/user-infomation.view-model";
+import { useAuth } from "../../contexts/auth.context";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const {login} = useAuth();
   const [username, setUsername] = useState<string>("");
   const [usernameError, setUsernameError] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
 
-  const login = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Handle login logic here
     // username and password not empty or null
     if (username && password) {
-      console.log("Logging in with", { username, password });
-      // Reset form fields
-      setUsername("");
-      setPassword("");
+      const authData: LoginRequestModel = {
+        username: username,
+        password: password
+      }
+
+      const loginResponse: LoginResponseModel = await authService.login(authData);
+      if (loginResponse && loginResponse.token) {
+        // Reset form fields
+        setUsername("");
+        setPassword("");
+        login(loginResponse);
+        // Navigate to home page
+        navigate("/");
+      } else {
+        alert("Login failed. Please check your username and password.");
+      }
     } else {
       if (!username) setUsernameError("Username is required");
       if (!password) setPasswordError("Password is required");
@@ -25,7 +44,7 @@ const Login = () => {
   return (
     <section className="bg-white p-6 rounded-md shadow-md w-96" aria-labelledby="login-title">
       <h2 className="text-3xl font-bold mb-4 text-center ">Login</h2>
-      <form className="" method="post" onSubmit={login}>
+      <form className="" method="post" onSubmit={onSubmit}>
         <div className="form-group mb-4">
           <label htmlFor="username" className="block mb-[5px]">Username</label>
           <input type="text" id="username" value={username} className="w-full p-2 border border-gray-300 rounded-sm" name="username" placeholder="Enter your username"

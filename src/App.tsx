@@ -9,23 +9,32 @@ import CustomerLayout from './components/layouts/CustomerLayout'
 import AuthLayout from './components/layouts/AuthLayout'
 import Dashboard from './pages/admin/Dashboard'
 import AdminLayout from './components/layouts/AdminLayout'
+import AnonymousRoute from './components/shared/AnonymousRoute'
+import { AuthProvider } from './contexts/auth.context'
 
 function App() {
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<CustomerLayout><Home/></CustomerLayout>} />
-        <Route path="/about" element={<CustomerLayout><About /></CustomerLayout>} />
-        <Route path="/contact" element={<CustomerLayout><Contact /></CustomerLayout>} />
-        <Route path="/login" element={<AuthLayout><Login /></AuthLayout>} />
-        <Route path="/register" element={<AuthLayout><Register /></AuthLayout>} />
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<CustomerLayout><Home /></CustomerLayout>} />
+          <Route path="/about" element={<CustomerLayout><About /></CustomerLayout>} />
+          <Route path="/contact" element={<CustomerLayout><Contact /></CustomerLayout>} />
 
-         {/* Admin Routing */}
-        <Route path="/admin" element={<AdminLayout><Dashboard /></AdminLayout>} />
-      </Routes>
+          {/* Unauthenticated Pages */}
+          <Route element={<AnonymousRoute />}>
+            {/* Auth Router */}
+            <Route path="/login" element={<AuthLayout><Login /></AuthLayout>} />
+            <Route path="/register" element={<AuthLayout><Register /></AuthLayout>} />
+          </Route>
 
-    </BrowserRouter>
+          {/* Admin Routing */}
+          <Route path="/admin" element={<AdminLayout><Dashboard /></AdminLayout>} />
+        </Routes>
+
+      </BrowserRouter>
+    </AuthProvider>
   )
 }
 

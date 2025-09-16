@@ -1,18 +1,28 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import capital_01 from '../../assets/capitals_01.png';
 import capital_02 from '../../assets/capitals_02.png';
 import capital_03 from '../../assets/capitals_03.png';
 import intro from '../../assets/intro.png';
 import QuizCard from '../../components/shared/QuizCard';
+import quizService from '../../services/quiz.service';
 
 const Home = () => {
-  const [quizzes, setQuizzes] = useState([
-    { id: 1, title: "Capitals of Country", description: "Test your knowledge of country capitals", image: capital_01, time: "15m" },
-    { id: 2, title: "World Geography", description: "Explore the world's geography", image: capital_02, time: "20m" },
-    { id: 3, title: "Famous Landmarks", description: "Identify famous landmarks around the world", image: capital_03, time: "10m" },
-  ]);
+  const [quizzes, setQuizzes] = useState([]);
 
   const title = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    fetchQuizzes();
+  }, []);
+
+  const fetchQuizzes = async () => {
+    try {
+      const response = await quizService.getAll();
+      setQuizzes(response);
+    } catch (error) {
+      console.error('Error fetching quizzes:', error);
+    }
+  }
 
   const changeTitleColor = () => {
     if (title.current) {
