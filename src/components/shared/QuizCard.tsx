@@ -1,6 +1,7 @@
+import { Link } from "react-router";
 import type { QuizModel } from "../../models/quiz.model";
 
-const QuizCard = ({ data, changeTextColor }: { data: QuizModel, changeTextColor: () => void }) => {
+const QuizCard = ({ data }: { data: QuizModel }) => {
     return (
         <div className="quiz-card p-3">
             {/* Image in assets with relative path abc.png from data item */}
@@ -11,7 +12,7 @@ const QuizCard = ({ data, changeTextColor }: { data: QuizModel, changeTextColor:
                     <span>{data.duration} mins</span>
                 </div>
                 <p>{data.description}</p>
-                <button onClick={changeTextColor} className="block w-full mt-3 text-center bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Start</button>
+                <Link to={`/quiz/${data.id}`} className="block w-full mt-3 text-center bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Start</Link>
             </div>
         </div>
     )   

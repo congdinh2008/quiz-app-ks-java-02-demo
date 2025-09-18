@@ -11,6 +11,7 @@ import Dashboard from './pages/admin/Dashboard'
 import AdminLayout from './components/layouts/AdminLayout'
 import AnonymousRoute from './components/shared/AnonymousRoute'
 import { AuthProvider } from './contexts/auth.context'
+import QuizDetail from './pages/customer/quizzes/QuizDetail'
 
 function App() {
 
@@ -31,6 +32,9 @@ function App() {
 
           {/* Admin Routing */}
           <Route path="/admin" element={<AdminLayout><Dashboard /></AdminLayout>} />
+
+          {/* Quiz Detail */}
+          <Route path="/quiz/:id" element={<CustomerLayout><QuizDetail /></CustomerLayout>} />
         </Routes>
 
       </BrowserRouter>
