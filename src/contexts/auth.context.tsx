@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { LoginResponseModel } from "../models/login-response.model";
 import type { UserInformationViewModel } from "../view-models/user-infomation.view-model";
 import React from "react";
@@ -65,7 +65,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 }
 
 export const useAuth = (): AuthContextType => {
-    const context = React.useContext(AuthContext);
+    const context = useContext(AuthContext);
     if (context === undefined) {
         throw new Error("useAuth must be used within an AuthProvider");
     }

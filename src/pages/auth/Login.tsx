@@ -24,11 +24,13 @@ const Login = () => {
         password: password
       }
 
+      // Gọi API để đăng nhập, nhận về token và user information, expires
       const loginResponse: LoginResponseModel = await authService.login(authData);
       if (loginResponse && loginResponse.token) {
         // Reset form fields
         setUsername("");
         setPassword("");
+        // Nạp thông tin đăng nhập thành công vào context
         login(loginResponse);
         // Navigate to home page
         navigate("/");
